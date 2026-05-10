@@ -6,8 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/books")
@@ -17,8 +18,12 @@ public class KozhanovAbdualimBookController {
     private final KozhanovAbdualimBookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<KozhanovAbdualimBookDto>> getAll() {
-        return ResponseEntity.ok(bookService.findAll());
+    public ResponseEntity<Page<KozhanovAbdualimBookDto>> search(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long publisherId,
+            Pageable pageable) {
+        return ResponseEntity.ok(bookService.search(title, categoryId, publisherId, pageable));
     }
 
     @GetMapping("/{id}")

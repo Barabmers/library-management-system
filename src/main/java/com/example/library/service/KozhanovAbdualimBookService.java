@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,14 @@ public class KozhanovAbdualimBookService {
         KozhanovAbdualimBook book = bookRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Book not found with id: " + id));
         return bookMapper.toDto(book);
+    }
+
+    public Page<KozhanovAbdualimBookDto> search(String title, Long categoryId, Long publisherId, Pageable pageable) {
+        log.info("Searching books: title={}, categoryId={}, publisherId={}, pageable={}",
+                title, categoryId, publisherId, pageable);
+        String titleParam = (title == null) ? "" : title;
+        return bookRepository.search(titleParam, categoryId, publisherId, pageable)
+                .map(bookMapper::toDto);
     }
 
     public KozhanovAbdualimBookDto create(KozhanovAbdualimBookDto dto) {
