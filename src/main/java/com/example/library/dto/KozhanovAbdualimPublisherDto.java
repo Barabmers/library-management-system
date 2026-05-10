@@ -1,5 +1,7 @@
 package com.example.library.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class KozhanovAbdualimPublisherDto {
     private Long id;
+
+    @NotBlank(message = "Name is required")
     private String name;
+
     private String address;
 }

@@ -2,6 +2,7 @@ package com.example.library.controller;
 
 import com.example.library.dto.KozhanovAbdualimAuthorDto;
 import com.example.library.service.KozhanovAbdualimAuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,12 @@ public class KozhanovAbdualimAuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<KozhanovAbdualimAuthorDto> create(@RequestBody KozhanovAbdualimAuthorDto dto) {
+    public ResponseEntity<KozhanovAbdualimAuthorDto> create(@Valid @RequestBody KozhanovAbdualimAuthorDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authorService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<KozhanovAbdualimAuthorDto> update(@PathVariable Long id,
+    public ResponseEntity<KozhanovAbdualimAuthorDto> update(@Valid @PathVariable Long id,
                                                             @RequestBody KozhanovAbdualimAuthorDto dto) {
         return ResponseEntity.ok(authorService.update(id, dto));
     }
