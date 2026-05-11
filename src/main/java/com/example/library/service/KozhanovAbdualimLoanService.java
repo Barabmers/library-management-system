@@ -27,6 +27,7 @@ public class KozhanovAbdualimLoanService {
     private final KozhanovAbdualimUserRepository userRepository;
     private final KozhanovAbdualimBookRepository bookRepository;
     private final KozhanovAbdualimLoanMapper loanMapper;
+    private final KozhanovAbdualimNotificationService notificationService;
 
     public List<KozhanovAbdualimLoanDto> findAll() {
         log.info("Fetching all loans");
@@ -75,6 +76,12 @@ public class KozhanovAbdualimLoanService {
         loan.setDueDate(LocalDate.now().plusDays(14));
 
         KozhanovAbdualimLoan saved = loanRepository.save(loan);
+        notificationService.notifyBorrowConfirmation(
+                user.getEmail(),
+                user.getUsername(),
+                book.getTitle(),
+                loan.getDueDate().toString()
+        );
         return loanMapper.toDto(saved);
     }
 

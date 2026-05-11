@@ -19,8 +19,10 @@ import org.springframework.data.domain.Pageable;
 @Transactional
 public class KozhanovAbdualimBookService {
 
+    
     private final KozhanovAbdualimBookRepository bookRepository;
     private final KozhanovAbdualimBookMapper bookMapper;
+    private final KozhanovAbdualimNotificationService notificationService;
 
     public List<KozhanovAbdualimBookDto> findAll() {
         log.info("Fetching all books");
@@ -49,7 +51,10 @@ public class KozhanovAbdualimBookService {
         dto.setId(null);
         KozhanovAbdualimBook book = bookMapper.toEntity(dto);
         KozhanovAbdualimBook saved = bookRepository.save(book);
+
+        notificationService.notifyBookCreated("bubanovm@gmail.com", saved.getTitle());
         return bookMapper.toDto(saved);
+
     }
 
     public KozhanovAbdualimBookDto update(Long id, KozhanovAbdualimBookDto dto) {
