@@ -33,6 +33,9 @@ public class KozhanovAbdualimBook {
     @Column(nullable = false)
     private Integer availableCopies;
 
+    @Column(name = "cover_path")
+    private String coverPath;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private KozhanovAbdualimPublisher publisher;

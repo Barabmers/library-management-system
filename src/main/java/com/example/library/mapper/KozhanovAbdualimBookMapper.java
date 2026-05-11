@@ -43,6 +43,8 @@ public class KozhanovAbdualimBookMapper {
             dto.setAuthorIds(ids);
         }
 
+        dto.setCoverPath(book.getCoverPath());
+
         return dto;
     }
 
@@ -70,6 +72,8 @@ public class KozhanovAbdualimBookMapper {
             );
             book.setAuthors(authors);
         }
+
+        book.setCoverPath(dto.getCoverPath());
 
         return book;
     }

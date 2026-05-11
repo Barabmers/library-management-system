@@ -15,6 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class KozhanovAbdualimBookDto {
     private Long id;
+    private String coverPath;
 
     @NotBlank(message = "Title is required")
     private String title;

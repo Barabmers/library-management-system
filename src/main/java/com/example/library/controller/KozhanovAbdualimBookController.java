@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import com.example.library.service.KozhanovAbdualimFileService;
+import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/books")
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 public class KozhanovAbdualimBookController {
 
     private final KozhanovAbdualimBookService bookService;
+    private final KozhanovAbdualimFileService fileService;
 
     @GetMapping
     public ResponseEntity<Page<KozhanovAbdualimBookDto>> search(
@@ -47,5 +51,26 @@ public class KozhanovAbdualimBookController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         bookService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/{id}/cover", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<KozhanovAbdualimBookDto> uploadCover(@PathVariable Long id,
+                                                               @RequestParam("file") MultipartFile file) {
+        KozhanovAbdualimBookDto book = bookService.findById(id);
+        String path = fileService.saveCover(id, file);
+        book.setCoverPath(path);
+        return ResponseEntity.ok(bookService.update(id, book));
+    }
+
+    @GetMapping("/{id}/cover")
+    public ResponseEntity<byte[]> downloadCover(@PathVariable Long id) {
+        KozhanovAbdualimBookDto book = bookService.findById(id);
+        if (book.getCoverPath() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        byte[] data = fileService.loadCover(book.getCoverPath());
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(data);
     }
 }
