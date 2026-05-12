@@ -45,3 +45,23 @@ application:
 
 file:
   upload-dir: ./uploads/covers
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+
+logging:
+  level:
+    root: INFO
+    com.example.library: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+  file:
+    name: logs/library-app.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
